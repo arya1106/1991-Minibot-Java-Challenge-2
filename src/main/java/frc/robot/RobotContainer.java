@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.DriveDistance;
-import frc.robot.commands.TurnGyro;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.OnBoardIO;
 import frc.robot.subsystems.OnBoardIO.ChannelMode;
@@ -23,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -35,7 +32,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final OnBoardIO m_onboardIO = new OnBoardIO(ChannelMode.INPUT, ChannelMode.INPUT);
-  private double x_steer = 0;
+  private double xCenterSteer = 0;
   private boolean stop = false;
 
   // Assumes a gamepad plugged into channnel 0
@@ -80,10 +77,10 @@ public class RobotContainer {
 
     // check if entry is being updated or set for the first time and update the value of x_steer
     nt.addEntryListener("center_x", (table, key, entry, value, flags) -> {
-      x_steer = (double) value.getValue();
+      xCenterSteer = (double) value.getValue();
     }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
-    // same thing as above, but with stop, and if it's true, stop the drivetrain
+    // same thing as above, but with the variable stop, and if it's true, stop the drivetrain
     nt.addEntryListener("stop", (table, key, entry, value, flags) -> {
       stop = (boolean) value.getValue();
       if(stop){
@@ -98,7 +95,7 @@ public class RobotContainer {
         .whenInactive(new PrintCommand("Button A Released"));
 
     // Setup SmartDashboard options
-    m_chooser.setDefaultOption("Auto Routine Distance", new ArcadeDrive(m_drivetrain, () -> (0.75), () -> (-0.99*x_steer) ));
+    m_chooser.setDefaultOption("Auto Routine Distance", new ArcadeDrive(m_drivetrain, () -> (0.75), () -> (-0.99*xCenterSteer) ));
     SmartDashboard.putData(m_chooser);
   }
 

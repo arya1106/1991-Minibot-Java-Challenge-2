@@ -1,3 +1,7 @@
+# this is losely based on https://docs.wpilib.org/en/stable/docs/software/vision-processing/wpilibpi/using-cameraserver.html
+# refer to it if you need more details, or feel free to ping me and ask questions
+# a lot of my opencv questions were on stack overflow, so google was a huge help too
+
 import numpy as np
 import cv2 as cv
 import time
@@ -45,7 +49,8 @@ while(True):
     outBlue = cv.morphologyEx(outBlue, cv.MORPH_OPEN, kernel=kernel, iterations=1)
     outGreen = cv.morphologyEx(outGreen, cv.MORPH_OPEN, kernel=kernel, iterations=1)
 
-    # find the countours we need
+    # find the countours we need, the first variable here isn't used for what we need and the second one isn't either
+    # but they can be useful in some other contsants
     _Blue, blueContours, blueHeirarchy = cv.findContours(outBlue, cv.RETR_LIST, cv.CHAIN_APPROX_NONE)
     _Green, greenContours, greenHeirarchy = cv.findContours(outGreen, cv.RETR_LIST, cv.CHAIN_APPROX_NONE)
     
