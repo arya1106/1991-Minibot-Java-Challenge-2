@@ -71,28 +71,25 @@ public class RobotContainer {
     // Default command is arcade drive. This will run unless another command
     // is scheduled over it.
     m_drivetrain.setDefaultCommand(getArcadeDriveCommand());
+
+
+    // network tables setup
     NetworkTableInstance ntInstance = NetworkTableInstance.getDefault();
     ntInstance.startServer();
     NetworkTable nt = ntInstance.getTable("vision");
+
+    // check if entry is being updated or set for the first time and update the value of x_steer
     nt.addEntryListener("center_x", (table, key, entry, value, flags) -> {
       x_steer = (double) value.getValue();
     }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+    // same thing as above, but with stop, and if it's true, stop the drivetrain
     nt.addEntryListener("stop", (table, key, entry, value, flags) -> {
       stop = (boolean) value.getValue();
       if(stop){
         CommandScheduler.getInstance().schedule(new ArcadeDrive(m_drivetrain, ()->(0.0), ()->(0.0)));
       }
     }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-
-    JoystickButton joystickButtonA = new JoystickButton(m_controller, 1);
-    joystickButtonA.whenActive(new DriveDistance(-0.6, 24, m_drivetrain));
-
-    JoystickButton joystickBumperRight = new JoystickButton(m_controller, 6);
-    joystickBumperRight.whenActive(new TurnGyro(m_drivetrain, 90, 0.6));
-
-    JoystickButton joystickBumperLeft = new JoystickButton(m_controller, 5);
-    joystickBumperLeft.whenActive(new TurnGyro(m_drivetrain, 90, -0.6));
-
 
     // Example of how to use the onboard IO
     Button onboardButtonA = new Button(m_onboardIO::getButtonAPressed);
@@ -121,6 +118,6 @@ public class RobotContainer {
    */
   public Command getArcadeDriveCommand() {
     return new ArcadeDrive(
-       m_drivetrain, () -> ((m_controller.getRawAxis(3)*-0.8)), () -> (m_controller.getRawAxis(0)*-.55 ));
+       m_drivetrain, () -> ((m_controller.getRawAxis(3)*-1)), () -> (m_controller.getRawAxis(0)*-.55 ));
 }
 }
