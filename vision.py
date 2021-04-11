@@ -49,7 +49,7 @@ while(True):
     outBlue = cv.morphologyEx(outBlue, cv.MORPH_OPEN, kernel=kernel, iterations=1)
     outGreen = cv.morphologyEx(outGreen, cv.MORPH_OPEN, kernel=kernel, iterations=1)
 
-    # find the countours we need, the first variable here isn't used for what we need and the second one isn't either
+    # find the countours we need, the first variable here isn't used for what we need and the third one isn't either
     # but they can be useful in some other contsants
     _Blue, blueContours, blueHeirarchy = cv.findContours(outBlue, cv.RETR_LIST, cv.CHAIN_APPROX_NONE)
     _Green, greenContours, greenHeirarchy = cv.findContours(outGreen, cv.RETR_LIST, cv.CHAIN_APPROX_NONE)
